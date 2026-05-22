@@ -10,7 +10,22 @@ const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
 const lightboxClose = document.getElementById('lightbox-close');
 
+const topnav = document.querySelector('.topnav');
+const menuToggle = document.querySelector('.menu-toggle');
 const navLinks = document.querySelectorAll('.topnav a');
+
+function closeMobileMenu() {
+  if (!topnav || !menuToggle) return;
+  topnav.classList.remove('open');
+  menuToggle.setAttribute('aria-expanded', 'false');
+}
+
+menuToggle?.addEventListener('click', () => {
+  if (!topnav || !menuToggle) return;
+  const isOpen = topnav.classList.toggle('open');
+  menuToggle.setAttribute('aria-expanded', String(isOpen));
+});
+
 navLinks.forEach(link => {
   link.addEventListener('click', event => {
     const href = link.getAttribute('href');
@@ -18,6 +33,7 @@ navLinks.forEach(link => {
     event.preventDefault();
     const target = document.querySelector(href);
     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    closeMobileMenu();
   });
 });
 
@@ -27,7 +43,7 @@ function buildInvitationHtml(guest) {
   return `
     <h3>Dear ${guest.name},</h3>
     <p>We are delighted to invite you and your party of ${guest.count} to celebrate our wedding day.</p>
-    <p><strong>Event:</strong> Saturday, July 4 · 5:00 PM</p>
+    <p><strong>Event:</strong> Saturday, July 4 · 11:00 AM</p>
     <p><strong>Location:</strong> Champions Event Center Ikpokpan</p>
     ${guest.message ? `<p>“${guest.message}”</p>` : ''}
     <p>Please let us know if you will join us for dinner, music and celebration.</p>
@@ -61,7 +77,7 @@ if (confirmButton) {
     bodyLines.push(`Name: ${currentGuest.name || ''}`);
     bodyLines.push(`Email: ${currentGuest.email || ''}`);
     bodyLines.push(`Number of guests: ${currentGuest.count || ''}`);
-    bodyLines.push(`Event: Saturday, July 4 · 5:00 PM`);
+    bodyLines.push(`Event: Saturday, July 4 · 11:00 AM`);
     bodyLines.push(`Location: Champions Event Center Ikpokpan`);
     if (currentGuest.message) bodyLines.push(`Message: ${currentGuest.message}`);
     bodyLines.push('\n--\nSent from wedding website');
